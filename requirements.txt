@@ -1,0 +1,15 @@
+# GTX 1080 / Windows / Python 3.11 dependency profile
+# Run from the repository root:
+#   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+torch==2.13.0+cu126
+torchvision==0.28.0+cu126
+torchaudio==2.11.0+cu126
+
+-r ComfyUI/requirements.txt
+-r ComfyUI/custom_nodes/ComfyUI-GGUF/requirements.txt
+
+huggingface_hub==1.28.0
+gguf==0.19.0

@@ -74,6 +74,7 @@ ai-video/
 │   └── system_info.txt
 ├── logs/
 ├── models-download/
+├── requirements.txt               # зависимости проверенной GTX 1080-сборки
 ├── MODEL_MANIFEST.md
 └── README.md
 ```
@@ -82,7 +83,17 @@ ai-video/
 
 ## Быстрый запуск готовой установки
 
-Запустите:
+Перед первым запуском обязательно установите все Python-зависимости из корня проекта:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
+.\.venv\Scripts\python.exe -m pip install -r .\requirements.txt
+```
+
+Команда должна выполняться после клонирования каталогов `ComfyUI` и `ComfyUI-GGUF`, потому что корневой `requirements.txt` подключает их официальные списки зависимостей.
+
+После успешной установки зависимостей запустите:
 
 ```powershell
 .\scripts\start_comfyui.bat
@@ -160,27 +171,22 @@ fps: 16
 - минимум 25 GB свободного места для GTX-конфигурации;
 - рекомендуется не менее 16 GB RAM.
 
-### ComfyUI и окружение
+### ComfyUI, ComfyUI-GGUF и зависимости
+
+Выполняйте команды из корня клонированного репозитория:
 
 ```powershell
 git clone --branch v0.30.0 --depth 1 https://github.com/Comfy-Org/ComfyUI.git ComfyUI
-py -3.11 -m venv .venv
-
-.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
-.\.venv\Scripts\python.exe -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
-.\.venv\Scripts\python.exe -m pip install -r .\ComfyUI\requirements.txt huggingface_hub
-```
-
-CUDA Toolkit отдельно устанавливать необязательно: официальный PyTorch wheel содержит необходимый CUDA runtime.
-
-### ComfyUI-GGUF
-
-```powershell
 git clone --depth 1 https://github.com/city96/ComfyUI-GGUF.git .\ComfyUI\custom_nodes\ComfyUI-GGUF
-.\.venv\Scripts\python.exe -m pip install -r .\ComfyUI\custom_nodes\ComfyUI-GGUF\requirements.txt
+
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
+.\.venv\Scripts\python.exe -m pip install -r .\requirements.txt
 ```
 
-ComfyUI Manager не требуется: GTX workflow использует только один явно зафиксированный custom node.
+Установка через корневой `requirements.txt` обязательна перед запуском. Он фиксирует проверенную CUDA 12.6-сборку PyTorch для GTX 1080 и подключает официальные зависимости ComfyUI и ComfyUI-GGUF.
+
+CUDA Toolkit отдельно устанавливать необязательно: PyTorch wheel уже содержит необходимый CUDA runtime. ComfyUI Manager не требуется — workflow использует только один явно установленный custom node.
 
 ## Модели для GTX 1080
 
